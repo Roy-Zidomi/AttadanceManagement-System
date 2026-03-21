@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EMPLOYEE
+}
+
+enum AttendanceStatus {
+  on_time
+  late
+  early_leave
+  absent
+  incomplete
+  rejected_outside_area
+}
+
+model User {
+  id         String   @id @default(uuid())
+  employeeId String   @unique // e.g., EMP-001
+  name       String
+  email      String   @unique
+  password   String
+  role       Role     @default(EMPLOYEE)
+  phone      String?
+  department String?
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  schedules   Schedule[]
+  attendances Attendance[]
+}
+
+model Shift {
+  id                  String   @id @default(uuid())
+  name                String   // e.g., Morning Shift
+  startTime           String   // Time in HH:MM format
+  endTime             String   // Time in HH:MM format
+  lateThreshold       Int      @default(15) // Minutes after start time until marked as late
+  earlyLeaveThreshold Int      @default(15) // Minutes before end time until marked as early leave
+  isActive            Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  schedules Schedule[]
+}
+
+model WorkLocation {
+  id           String   @id @default(uuid())
+  name         String   // e.g., HQ, Branch Office
+  address      String?
+  latitude     Float
+  longitude    Float
+  radiusMeters Int      @default(100) // Allowed check-in radius
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  schedules Schedule[]
+}
+
+model Schedule {
+  id         String   @id @default(uuid())
+  userId     String
+  shiftId    String
+  locationId String
+  date       DateTime @db.Date // Only the date part matters here
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Restrict)
+  shift       Shift        @relation(fields: [shiftId], references: [id], onDelete: Restrict)
+  location    WorkLocation @relation(fields: [locationId], references: [id], onDelete: Restrict)
+  attendances Attendance[]
+}
+
+model Attendance {
+  id               String            @id @default(uuid())
+  userId           String
+  scheduleId       String
+  checkInTime      DateTime?
+  checkOutTime     DateTime?
+  checkInLat       Float?
+  checkInLng       Float?
+  checkOutLat      Float?
+  checkOutLng      Float?
+  checkInDistance  Float?
+  checkOutDistance Float?
+  photoUrl         String? // Path to uploaded photo
+  status           AttendanceStatus // on_time, late, early_leave, absent, etc
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  schedule Schedule @relation(fields: [scheduleId], references: [id], onDelete: Restrict)
+}
