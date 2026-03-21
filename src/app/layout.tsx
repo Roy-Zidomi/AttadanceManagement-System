@@ -7,7 +7,7 @@ import { ThemeProvider } from '@/components/providers/ThemeProvider'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'GeoShift - Attendance System',
+  title: 'ShiftTrack - Attendance System',
   description: 'Geo-verified shift attendance management system',
 }
 

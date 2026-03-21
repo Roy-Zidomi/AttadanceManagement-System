@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Loader2, ShieldCheck, Mail, Lock, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { Loader2, Mail, Lock, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { Logo } from "@/components/Logo";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -43,13 +44,13 @@ export default function LoginPage() {
           {/* Logo */}
           <div className="text-center mb-8">
             <div className="mx-auto h-16 w-16 bg-emerald-500 rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-emerald-500/20">
-              <ShieldCheck className="h-8 w-8 text-white" />
+              <Logo className="h-8 w-8 text-white" />
             </div>
             <h2 className="text-3xl font-bold text-white tracking-tight">
               Welcome back
             </h2>
             <p className="mt-2 text-slate-400 text-sm">
-              Sign in to GeoShift Attendance System
+              Sign in to ShiftTrack Attendance System
             </p>
           </div>
 
@@ -126,7 +127,7 @@ export default function LoginPage() {
         </div>
 
         <p className="text-center text-slate-600 text-xs mt-6">
-          GeoShift Attendance System &copy; {new Date().getFullYear()}
+          ShiftTrack Attendance System &copy; {new Date().getFullYear()}
         </p>
       </div>
     </div>

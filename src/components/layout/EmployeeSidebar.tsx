@@ -4,13 +4,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { LayoutDashboard, LogIn, LogOut, History, UserCircle, ShieldCheck, Menu, X } from "lucide-react";
+import { LayoutDashboard, Camera, LogOut, MapPin, History, UserCircle, Menu, X } from "lucide-react";
 import { useState } from "react";
+import { Logo } from "@/components/Logo";
 
 const navigation = [
   { name: "Overview", href: "/employee/dashboard", icon: LayoutDashboard },
-  { name: "Check In", href: "/employee/check-in", icon: LogIn },
-  { name: "Check Out", href: "/employee/check-out", icon: LogOut },
+  { name: "Check In", href: "/employee/check-in", icon: Camera },
+  { name: "Check Out", href: "/employee/check-out", icon: MapPin },
   { name: "History", href: "/employee/history", icon: History },
 ];
 
@@ -23,10 +24,10 @@ export default function EmployeeSidebar() {
     <>
       <div className="flex h-14 items-center gap-3 px-5 border-b border-slate-200 dark:border-white/5">
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500 shadow-md shadow-emerald-500/20">
-          <ShieldCheck className="h-4 w-4 text-white" />
+          <Logo className="h-5 w-5 text-white" />
         </div>
         <span className="text-base font-bold tracking-tight text-slate-800 dark:text-white">
-          GeoShift
+          ShiftTrack
         </span>
         <button className="ml-auto lg:hidden text-slate-400 hover:text-slate-600 dark:hover:text-white" onClick={() => setOpen(false)}>
           <X className="h-5 w-5" />
@@ -94,10 +95,10 @@ export default function EmployeeSidebar() {
         </button>
         <div className="ml-3 flex items-center gap-2">
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500 shadow-md shadow-emerald-500/20">
-            <ShieldCheck className="h-4 w-4 text-white" />
+            <Logo className="h-4 w-4 text-white" />
           </div>
           <span className="text-base font-bold tracking-tight text-slate-800 dark:text-white">
-            GeoShift
+            ShiftTrack
           </span>
         </div>
       </div>

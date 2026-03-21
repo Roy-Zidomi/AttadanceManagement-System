@@ -4,8 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { LayoutDashboard, Users, CalendarDays, Clock, MapPin, CheckCircle, LogOut, ShieldCheck, Menu, X } from "lucide-react";
+import { LayoutDashboard, Users, CalendarDays, Clock, MapPin, CheckCircle, LogOut, Menu, X, FileBarChart } from "lucide-react";
 import { useState } from "react";
+import { Logo } from "@/components/Logo";
 
 const navigation = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
@@ -14,6 +15,7 @@ const navigation = [
   { name: "Locations", href: "/admin/locations", icon: MapPin },
   { name: "Schedules", href: "/admin/schedules", icon: CalendarDays },
   { name: "Attendance", href: "/admin/attendance", icon: CheckCircle },
+  { name: "Reports", href: "/admin/reports", icon: FileBarChart },
 ];
 
 export default function AdminSidebar() {
@@ -25,10 +27,10 @@ export default function AdminSidebar() {
     <>
       <div className="flex h-14 items-center gap-3 px-5 border-b border-slate-200 dark:border-white/5">
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500 shadow-md shadow-emerald-500/20">
-          <ShieldCheck className="h-4 w-4 text-white" />
+          <Logo className="h-5 w-5 text-white" />
         </div>
         <span className="text-base font-bold tracking-tight text-slate-800 dark:text-white">
-          GeoShift
+          ShiftTrack
         </span>
         <button className="ml-auto lg:hidden text-slate-400 hover:text-slate-600 dark:hover:text-white" onClick={() => setOpen(false)}>
           <X className="h-5 w-5" />
@@ -96,10 +98,10 @@ export default function AdminSidebar() {
         </button>
         <div className="ml-3 flex items-center gap-2">
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500 shadow-md shadow-emerald-500/20">
-            <ShieldCheck className="h-4 w-4 text-white" />
+            <Logo className="h-4 w-4 text-white" />
           </div>
           <span className="text-base font-bold tracking-tight text-slate-800 dark:text-white">
-            GeoShift
+            ShiftTrack
           </span>
         </div>
       </div>
