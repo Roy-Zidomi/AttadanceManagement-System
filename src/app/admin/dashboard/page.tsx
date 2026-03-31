@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Users, CalendarDays, CheckCircle, Clock, AlertCircle, MapPin, Loader2, TrendingUp } from "lucide-react";
+import { Loader2, TrendingUp } from "lucide-react";
 
 type DashboardStats = {
   totalEmployees: number;
@@ -37,16 +37,16 @@ export default function AdminDashboard() {
   if (!stats) return <div className="text-center py-12 text-slate-500 dark:text-slate-400">Failed to load data</div>;
 
   const statCards = [
-    { title: "Total Employees", value: stats.totalEmployees, icon: Users, color: "text-emerald-500", bg: "bg-emerald-500/10" },
-    { title: "Scheduled Today", value: stats.totalScheduled, icon: CalendarDays, color: "text-blue-500", bg: "bg-blue-500/10" },
-    { title: "Checked In", value: stats.totalCheckedIn, icon: CheckCircle, color: "text-emerald-500", bg: "bg-emerald-500/10" },
-    { title: "Est. Absent", value: stats.absentEstimate, icon: AlertCircle, color: "text-rose-500", bg: "bg-rose-500/10" },
+    { title: "Total Employees", value: stats.totalEmployees },
+    { title: "Scheduled Today", value: stats.totalScheduled },
+    { title: "Checked In", value: stats.totalCheckedIn },
+    { title: "Est. Absent", value: stats.absentEstimate },
   ];
 
   const detailCards = [
-    { title: "On Time", value: stats.onTime, icon: CheckCircle, color: "text-emerald-500", bg: "bg-emerald-500/10" },
-    { title: "Late Check-ins", value: stats.late, icon: Clock, color: "text-amber-500", bg: "bg-amber-500/10" },
-    { title: "Rejected (Location)", value: stats.rejected, icon: MapPin, color: "text-rose-500", bg: "bg-rose-500/10" },
+    { title: "On Time", value: stats.onTime },
+    { title: "Late Check-ins", value: stats.late },
+    { title: "Rejected (Location)", value: stats.rejected },
   ];
 
   return (
@@ -63,11 +63,6 @@ export default function AdminDashboard() {
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
         {statCards.map((card) => (
           <div key={card.title} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm group">
-            <div className="flex items-center justify-between mb-3">
-              <div className={`flex h-10 w-10 items-center justify-center rounded-xl border border-white/5 ${card.bg}`}>
-                <card.icon className={`h-5 w-5 ${card.color}`} />
-              </div>
-            </div>
             <h3 className="text-3xl font-bold text-slate-900 dark:text-white">{card.value}</h3>
             <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1">{card.title}</p>
           </div>
@@ -77,10 +72,7 @@ export default function AdminDashboard() {
       {/* Detail cards */}
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
         {detailCards.map((card) => (
-          <div key={card.title} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm flex items-center gap-4">
-            <div className={`p-3 rounded-xl ${card.bg}`}>
-              <card.icon className={`h-5 w-5 ${card.color}`} />
-            </div>
+          <div key={card.title} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
             <div>
               <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{card.title}</p>
               <h3 className="text-2xl font-bold text-slate-900 dark:text-white">{card.value}</h3>
