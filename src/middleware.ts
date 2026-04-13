@@ -45,6 +45,8 @@ export default withAuth(
         // Public routes
         if (
           pathname.startsWith("/login") ||
+          pathname.startsWith("/forgot-password") ||
+          pathname.startsWith("/icon") ||
           pathname.startsWith("/api/auth") ||
           pathname.startsWith("/uploads")
         ) {

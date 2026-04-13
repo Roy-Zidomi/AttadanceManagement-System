@@ -56,14 +56,19 @@ async function main() {
   })
 
   // 4. Initial Users
-  const passwordHash = await bcrypt.hash('password123', 10)
+  // Seed defaults (override via env if needed)
+  const adminPlainPassword = process.env.SEED_ADMIN_PASSWORD || 'admin123'
+  const employeePlainPassword = process.env.SEED_EMPLOYEE_PASSWORD || 'password123'
+
+  const adminPasswordHash = await bcrypt.hash(adminPlainPassword, 10)
+  const employeePasswordHash = await bcrypt.hash(employeePlainPassword, 10)
 
   const admin = await prisma.user.create({
     data: {
       employeeId: 'ADM-001',
       name: 'Super Admin',
       email: 'admin@company.com',
-      password: passwordHash,
+      password: adminPasswordHash,
       role: Role.ADMIN,
       department: 'Management',
     },
@@ -74,7 +79,7 @@ async function main() {
       employeeId: 'EMP-001',
       name: 'John Doe',
       email: 'john@company.com',
-      password: passwordHash,
+      password: employeePasswordHash,
       role: Role.EMPLOYEE,
       department: 'IT',
     },
@@ -85,7 +90,7 @@ async function main() {
       employeeId: 'EMP-002',
       name: 'Jane Smith',
       email: 'jane@company.com',
-      password: passwordHash,
+      password: employeePasswordHash,
       role: Role.EMPLOYEE,
       department: 'HR',
     },

@@ -36,6 +36,7 @@ model User {
 
   schedules   Schedule[]
   attendances Attendance[]
+  passwordResetOtps PasswordResetOtp[]
 }
 
 model Shift {
@@ -101,4 +102,20 @@ model Attendance {
 
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   schedule Schedule @relation(fields: [scheduleId], references: [id], onDelete: Restrict)
+}
+
+model PasswordResetOtp {
+  id         String   @id @default(uuid())
+  userId     String
+  email      String
+  otpHash    String
+  expiresAt  DateTime
+  consumedAt DateTime?
+  attempts   Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([email, createdAt])
+  @@index([userId, createdAt])
 }

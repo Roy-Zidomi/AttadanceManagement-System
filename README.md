@@ -68,6 +68,18 @@ DATABASE_URL="postgresql://username:password@localhost:5432/shifttrack?schema=pu
 # NextAuth Configuration
 NEXTAUTH_URL="http://localhost:3000"
 NEXTAUTH_SECRET="your-super-secret-string-here"
+
+# Cloudinary (photo upload storage)
+CLOUDINARY_CLOUD_NAME="your-cloud-name"
+CLOUDINARY_API_KEY="your-api-key"
+CLOUDINARY_API_SECRET="your-api-secret"
+CLOUDINARY_UPLOAD_FOLDER="attendance-proofs"
+
+# Email OTP (Forgot Password)
+RESEND_API_KEY="your-resend-api-key"
+EMAIL_FROM="ShiftTrack <onboarding@resend.dev>"
+# Optional (recommended): separate secret for OTP hashing
+OTP_SECRET="your-otp-secret"
 ```
 
 ### 3. Setup Database
@@ -106,6 +118,10 @@ To log in and explore the application initially, use the following generated acc
 - **Password:** `password123`
 *(Other demo employee emails might exist such as jane@company.com, depending on your seed data).*
 
+You can override seed passwords using environment variables:
+- `SEED_ADMIN_PASSWORD`
+- `SEED_EMPLOYEE_PASSWORD`
+
 ---
 
 ## Project Structure
@@ -128,9 +144,7 @@ To log in and explore the application initially, use the following generated acc
 ```
 
 ## Security Notes
-- Uploaded attendee photos are currently saved to local storage inside `/public/uploads`. In a production environment, this should be refactored to use object storage like **AWS S3** or **Cloudinary**.
+- Uploaded attendee photos are stored in **Cloudinary** via the `/api/upload` route. Ensure Cloudinary environment variables are configured in every deployment environment.
 - Geolocation security relies on the browser's HTML5 Geolocation API.
 
 ---
-
-

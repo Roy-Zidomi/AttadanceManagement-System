@@ -99,7 +99,7 @@ export async function POST(req: NextRequest) {
     const thresholdMillis = schedule.shift.lateThreshold * 60 * 1000;
     const latestOnTime = new Date(shiftStartDate.getTime() + thresholdMillis);
 
-    let status = AttendanceStatus.on_time;
+    let status: AttendanceStatus = AttendanceStatus.on_time;
     if (now > latestOnTime) {
       status = AttendanceStatus.late;
     }

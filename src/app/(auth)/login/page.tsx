@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Loader2, Mail, Lock, ArrowRight, Eye, EyeOff } from "lucide-react";
 import { Logo } from "@/components/Logo";
@@ -122,6 +123,14 @@ export default function LoginPage() {
               )}
             </button>
 
+            <div className="text-center text-sm">
+              <Link
+                href="/forgot-password"
+                className="text-slate-300 hover:text-white transition-colors"
+              >
+                Forgot password?
+              </Link>
+            </div>
 
           </form>
         </div>
