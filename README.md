@@ -122,6 +122,21 @@ You can override seed passwords using environment variables:
 - `SEED_ADMIN_PASSWORD`
 - `SEED_EMPLOYEE_PASSWORD`
 
+## Initial Admin (Production)
+
+Avoid publishing a fixed admin password in a public README.
+
+To create the first admin on a fresh production database (without wiping data), set these env vars and run:
+- `ADMIN_EMAIL`
+- `ADMIN_PASSWORD`
+- `ADMIN_EMPLOYEE_ID` (optional)
+- `ADMIN_NAME` (optional)
+- `ADMIN_DEPARTMENT` (optional)
+
+```bash
+npm run create-admin
+```
+
 ---
 
 ## Project Structure

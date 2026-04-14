@@ -13,6 +13,7 @@ export default function CheckInPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
   const [photoBlob, setPhotoBlob] = useState<Blob | null>(null);
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
 
@@ -20,22 +21,43 @@ export default function CheckInPage() {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (pos) => { setLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }); setLocationError(""); },
-        (err) => { setLocationError("Please enable location access to check in."); },
+        () => { setLocationError("Please enable location access to check in."); },
         { enableHighAccuracy: true }
       );
     } else { setLocationError("Geolocation is not supported."); }
     return () => { stopCamera(); };
   }, []);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (!stream) {
+      video.srcObject = null;
+      return;
+    }
+
+    video.srcObject = stream;
+    video.muted = true;
+    const playPromise = video.play();
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(() => {});
+    }
+  }, [stream]);
+
   const startCamera = async () => {
     try {
       const ms = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+      streamRef.current = ms;
       setStream(ms);
-      if (videoRef.current) videoRef.current.srcObject = ms;
     } catch { setError("Please allow camera access."); }
   };
 
-  const stopCamera = () => { stream?.getTracks().forEach(t => t.stop()); setStream(null); };
+  const stopCamera = () => {
+    streamRef.current?.getTracks().forEach((t) => t.stop());
+    streamRef.current = null;
+    setStream(null);
+  };
 
   const takePhoto = () => {
     if (videoRef.current && canvasRef.current) {
@@ -61,7 +83,9 @@ export default function CheckInPage() {
       const data = await checkinRes.json();
       if (checkinRes.ok) router.push("/employee/dashboard?checkedIn=true");
       else setError(data.error || "Failed to check in");
-    } catch (err: any) { setError(err.message || "An unexpected error occurred"); }
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "An unexpected error occurred");
+    }
     finally { setLoading(false); }
   };
 
@@ -101,14 +125,14 @@ export default function CheckInPage() {
             <Camera className="h-5 w-5 text-emerald-500" /> Photo Verification
           </p>
           <div className="bg-slate-50 dark:bg-white/[0.02] rounded-xl aspect-video relative overflow-hidden flex flex-col items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-700">
-            {photoUrl ? (
-              <img src={photoUrl} alt="Captured" className="w-full h-full object-cover" />
-            ) : stream ? (
-              <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover transform -scale-x-100" />
-            ) : (
-              <div className="text-center p-6">
-                <Camera className="mx-auto h-12 w-12 text-slate-400 dark:text-slate-600 mb-3" />
-                <button onClick={startCamera} className="text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 px-4 py-2 transition-colors rounded-xl text-sm border border-slate-300 dark:border-slate-700">Enable Camera</button>
+             {photoUrl ? (
+               <img src={photoUrl} alt="Captured" className="w-full h-full object-cover" />
+             ) : stream ? (
+              <video ref={videoRef} autoPlay muted playsInline className="w-full h-full object-cover transform -scale-x-100" />
+             ) : (
+               <div className="text-center p-6">
+                 <Camera className="mx-auto h-12 w-12 text-slate-400 dark:text-slate-600 mb-3" />
+                 <button onClick={startCamera} className="text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 px-4 py-2 transition-colors rounded-xl text-sm border border-slate-300 dark:border-slate-700">Enable Camera</button>
               </div>
             )}
             <canvas ref={canvasRef} className="hidden" />
